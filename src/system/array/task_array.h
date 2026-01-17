@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../task.h"
+#include "../../system/task.h"
 
 typedef struct {
 	task_t *items;
@@ -13,3 +13,4 @@ typedef struct {
 
 task_array_t task_array_create(size_t initial_size);
 void task_array_append(task_array_t* arr, task_t task);
+void task_array_free(task_array_t *arr);
