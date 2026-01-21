@@ -25,8 +25,14 @@ void task_array_append(task_array_t* arr, task_t task)
 		} else {
 			arr->capacity *= 2;
 		}
-		task_t *old_buffer = arr->items;
-		arr->items = realloc(arr->items, sizeof(*arr->items) * arr->capacity);
+
+		const size_t bytes_size = sizeof(*arr->items) * arr->capacity;
+		if (arr->items == NULL) {
+			arr->items = malloc(bytes_size);
+		} else {
+			task_t *old_buffer = arr->items;
+			arr->items = realloc(arr->items, sizeof(*arr->items) * arr->capacity);
+		}
 	}
 
 	// const size_t content_len = strlen(task.content);
