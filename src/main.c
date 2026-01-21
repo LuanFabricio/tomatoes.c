@@ -5,6 +5,7 @@
 
 #include "button.h"
 #include "components/button_component_container.h"
+#include "database.h"
 #include "raylib.h"
 
 #include "./system/task.h"
@@ -12,6 +13,7 @@
 #include "./components/task_component.h"
 #include "./components/task_component_container.h"
 #include "./text.h"
+#include "system/array/task_array.h"
 
 #define DIGITS_BUFFER_LEN 10
 
@@ -59,7 +61,7 @@ void update_positions()
 			});
 }
 
-void setup()
+void setup(task_array_t tasks)
 {
 	InitWindow(screen_width, screen_height, "Pomodoro");
 	InitAudioDevice();
@@ -76,6 +78,14 @@ void setup()
 	task_component = task_component_create(task, 32, (Vector2){screen_width/2.f, screen_height/2.f});
 ;
 	task_container = task_component_container_create((Vector2){64, 64});
+	for (size_t i = 0; i < tasks.size; i++) {
+		task_component_container_append(
+			&task_container,
+			tasks.items[i],
+			32
+		);
+	}
+	/*
 	task_component_container_append(
 		&task_container,
 		(task_t){.content = "task easy (1)", .task_level = TASK_LEVEL_EASY},
@@ -92,6 +102,7 @@ void setup()
 		&task_container,
 		(task_t){.content = "Ir para academia", .task_level = TASK_LEVEL_HARD},
 		32);
+	*/
 
 	task_component_container_update_sizes(&task_container);
 	task_component_container_update_position(&task_container, (Vector2){960-task_container.size.x-30, 120});
@@ -186,7 +197,12 @@ void update_loop()
 
 int main(void)
 {
-	setup();
+
+	database_init();
+	task_array_t task_array = {0};
+	database_fetch_tasks(&task_array);
+	setup(task_array);
+	task_array_free(&task_array);
 
 	while (!WindowShouldClose()) {
 		draw_loop();
