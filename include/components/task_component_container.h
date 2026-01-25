@@ -2,7 +2,7 @@
 
 #include "raylib.h"
 
-#include "./array/task_component_array.h"
+#include "components/array/task_component_array.h"
 
 typedef struct {
 	task_component_array_t tasks;

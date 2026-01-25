@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-#include "../array/button_array.h"
+#include "array/button_array.h"
 
 typedef struct {
 	button_array_t buttons;

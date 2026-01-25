@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../../system/task.h"
+#include "system/task.h"
 
 typedef struct {
 	task_t *items;

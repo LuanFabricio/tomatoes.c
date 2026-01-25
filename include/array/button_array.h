@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../button.h"
+#include "button.h"
 
 typedef struct {
 	button_t *items;

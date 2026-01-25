@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdbool.h>
 
 #define TASK_MAX_CONTENT_LEN 50
 
