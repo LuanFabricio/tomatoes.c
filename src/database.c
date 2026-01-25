@@ -34,7 +34,7 @@ do {\
 
 static sqlite3 *db = NULL;
 
-static int database__fetch_tables_callback(void* table_arr_ptr, int argc, char**argv, char** col_name)
+static int database__fetch_tables_callback(void* table_arr_ptr, int, char**argv, char**)
 {
 	tables_t *table_names = (tables_t*) table_arr_ptr;
 	const size_t name_len = strlen(argv[0]);
@@ -81,6 +81,7 @@ static int database__fetch_tasks_callback(void* task_arr_ptr, int argc, char**ar
 	const size_t index = task_array ? task_array->size : 0;
 	printf("========== ROW %02lu ==========\n", index + 1);
 	task_t task = {
+		.id = atoi(argv[0]),
 		.task_level = atoi(argv[2]),
 		.completed = strcmp(argv[3], "true") == 0,
 	};
@@ -90,7 +91,7 @@ static int database__fetch_tasks_callback(void* task_arr_ptr, int argc, char**ar
 		strncpy(task.content, argv[1], TASK_MAX_CONTENT_LEN);
 		task_array_append(task_array, task);
 	}
-	for (size_t i = 0; i < argc; i++) {
+	for (int i = 0; i < argc; i++) {
 		printf("%s = %s\n", col_name[i], argv[i] ? argv[i] : "NULL");
 	}
 	return 0;

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "task_array.h"
+#include "system/array/task_array.h"
 
 task_array_t task_array_create(size_t initial_size)
 {
@@ -30,7 +30,6 @@ void task_array_append(task_array_t* arr, task_t task)
 		if (arr->items == NULL) {
 			arr->items = malloc(bytes_size);
 		} else {
-			task_t *old_buffer = arr->items;
 			arr->items = realloc(arr->items, sizeof(*arr->items) * arr->capacity);
 		}
 	}

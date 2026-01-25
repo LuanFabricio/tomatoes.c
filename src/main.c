@@ -34,7 +34,7 @@ static char digits_buffer[DIGITS_BUFFER_LEN];
 static task_component_t task_component;
 
 
-const static int default_font_size = 32;
+static const int default_font_size = 32;
 
 static void button_next_on_click_callback(void *button_raw)
 {
@@ -110,7 +110,7 @@ void setup(task_array_t tasks)
 	button_component_container = button_component_container_create((Vector2){342, 42});
 	button_component_container_append(
 		&button_component_container,
-		text_create("Next", default_font_size, font, (Vector2){0, 0}),
+		text_create("Next", default_font_size, font),
 		BLUE,
 		RED
 	);
@@ -118,7 +118,7 @@ void setup(task_array_t tasks)
 
 	button_component_container_append(
 		&button_component_container,
-		text_create("Pause", default_font_size, font, (Vector2){0, 0}),
+		text_create("Pause", default_font_size, font),
 		BLUE,
 		RED
 	);
@@ -208,6 +208,7 @@ int main(void)
 		draw_loop();
 		update_loop();
 	}
+
 
 	return 0;
 }

@@ -10,7 +10,7 @@ float text__calc_font_spacing(int font_size)
 	return font_size / 10.f;
 }
 
-text_t text_create(char* content, int font_size, Font font, Vector2 position)
+text_t text_create(char* content, int font_size, Font font)
 {
 	text_t text = {
 		.font_size = font_size,

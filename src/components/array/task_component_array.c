@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "task_component_array.h"
+#include "components/array/task_component_array.h"
 
 task_component_array_t task_component_array_create(size_t initial_size)
 {

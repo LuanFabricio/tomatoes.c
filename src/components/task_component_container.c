@@ -1,7 +1,7 @@
 #include "raylib.h"
-#include "./task_component_container.h"
-#include "./array/task_component_array.h"
-#include "task_component.h"
+#include "components/task_component_container.h"
+#include "components/array/task_component_array.h"
+#include "components/task_component.h"
 
 task_component_container_t task_component_container_create(Vector2 position)
 {
@@ -18,7 +18,6 @@ void task_component_container_append(task_component_container_t* container, task
 		.x = container->position.x,
         	.y = container->position.y + container->size.y,
 	};
-	const Vector2 padding = {32, 32};
 
 	task_component_t render = task_component_create(task, font_size, position);
 

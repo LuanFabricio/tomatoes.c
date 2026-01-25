@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "button_array.h"
+#include "array/button_array.h"
 
 button_array_t button_array_create(size_t initial_size)
 {
@@ -22,7 +22,6 @@ void button_array_append(button_array_t* arr, button_t button)
 		} else {
 			arr->capacity *= 2;
 		}
-		button_t *old_buffer = arr->items;
 		arr->items = realloc(arr->items, sizeof(*arr->items) * arr->capacity);
 	}
 

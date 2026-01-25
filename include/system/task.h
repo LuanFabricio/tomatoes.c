@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stddef.h>
+
 #define TASK_MAX_CONTENT_LEN 50
 
 typedef enum {
@@ -9,6 +11,7 @@ typedef enum {
 } task_level_e;
 
 typedef struct {
+	size_t id;
 	char content[TASK_MAX_CONTENT_LEN];
 	task_level_e task_level;
 	bool completed;

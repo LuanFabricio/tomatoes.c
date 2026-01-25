@@ -1,6 +1,8 @@
-#include "button_component_container.h"
-#include "../array/button_array.h"
-#include <raylib.h>
+#include "raylib.h"
+#include "raymath.h"
+
+#include "components/button_component_container.h"
+#include "array/button_array.h"
 
 button_component_container_t button_component_container_create(Vector2 position)
 {

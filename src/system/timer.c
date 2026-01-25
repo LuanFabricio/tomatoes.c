@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-#include "timer.h"
+#include "system/timer.h"
 
 timer_pomodoro_t timer_create(seconds_t focus_timer, seconds_t rest_timer, Sound *alarm)
 {

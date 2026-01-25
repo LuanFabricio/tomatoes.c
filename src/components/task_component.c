@@ -1,13 +1,12 @@
 #include "assert.h"
 
 #include "raylib.h"
-#include "raymath.h"
 
-#include "task_component.h"
+#include "components/task_component.h"
 
-const static Color TASK_LEVEL_EASY_DEFAULT_COLOR = GREEN;
-const static Color TASK_LEVEL_MEDIUM_DEFAULT_COLOR = YELLOW;
-const static Color TASK_LEVEL_HARD_DEFAULT_COLOR = RED;
+static const Color TASK_LEVEL_EASY_DEFAULT_COLOR = GREEN;
+static const Color TASK_LEVEL_MEDIUM_DEFAULT_COLOR = YELLOW;
+static const Color TASK_LEVEL_HARD_DEFAULT_COLOR = RED;
 
 static Color task_component__get_level_default_color(task_level_e level)
 {
@@ -41,7 +40,6 @@ task_component_t task_component_create(task_t task, int font_size, Vector2 posit
 		font_spacing);
 
 	const Vector2 default_padding = {32, 32};
-	const Vector2 size = Vector2Add(text_size, default_padding);
 	Rectangle task_rect = {
 		.x = position.x,
 		.y = position.y,

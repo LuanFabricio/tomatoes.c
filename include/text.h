@@ -15,7 +15,7 @@ typedef struct {
 } text_t;
 
 // TODO: Move text create to use an text_t buffer instead of create from scratch
-text_t text_create(char* content, int font_size, Font font, Vector2 position);
+text_t text_create(char* content, int font_size, Font font);
 
 void text_draw(const text_t *text, const Color color);
 

@@ -3,7 +3,6 @@
 #include <stdbool.h>
 
 #include "raylib.h"
-#include "raymath.h"
 
 #include "text.h"
 

@@ -1,6 +1,7 @@
 #include <stddef.h>
 
 #include "raylib.h"
+#include "raymath.h"
 
 #include "button.h"
 #include "text.h"
