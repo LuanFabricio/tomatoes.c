@@ -202,13 +202,23 @@ int main(void)
 	task_array_t task_array = {0};
 	database_fetch_tasks(&task_array);
 	setup(task_array);
-	task_array_free(&task_array);
+
 
 	while (!WindowShouldClose()) {
 		draw_loop();
 		update_loop();
 	}
 
+	for (size_t i = 0; i < task_array.size; i++) {
+		const task_t task = task_array.items[i] ;
+		printf("\t.id=%lu\n", task.id);
+		printf("\t.content=%s\n", task.content);
+		printf("\t.task_level=%i\n", task.task_level);
+		printf("\t.completed=%b\n", task.completed);
+
+		database_update_task(task);
+	}
+	task_array_free(&task_array);
 
 	return 0;
 }
