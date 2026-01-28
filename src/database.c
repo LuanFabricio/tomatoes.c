@@ -9,6 +9,8 @@
 
 #include "system/array/task_array.h"
 
+#define MAX_UPDATE_STRING 255
+
 typedef struct {
 	char **items;
 	size_t size;
@@ -66,8 +68,12 @@ static void database__fetch_tables()
 	if (!exist_task_table) {
 		printf("Creating task table...\n");
 		const char* create_task_table = ""
-			"create table tasks(name varchar(30), level int, completed bool)";
-		if (sqlite3_exec(db, create_task_table, NULL, NULL, &err_msg) == SQLITE_ABORT) {
+			"create table tasks("
+			"	id integer primary key autoincrement not null,"
+			"	name varchar(30),"
+			"	level int,"
+			"	completed bool)";
+		if (sqlite3_exec(db, create_task_table, NULL, NULL, &err_msg) != SQLITE_OK) {
 			printf("ERROR: %s\n", err_msg);
 		}
 	}
@@ -114,7 +120,7 @@ void database_fetch_tasks(task_array_t *task_array)
 	if (db == NULL) return;
 
 	char *err_msg;
-	int res = sqlite3_exec(db, "select * from tasks;", database__fetch_tasks_callback, (void*)task_array, &err_msg);
+	int res = sqlite3_exec(db, "select id, name, level, completed from tasks;", database__fetch_tasks_callback, (void*)task_array, &err_msg);
 	if (res != SQLITE_OK) printf("%s\n", err_msg);
 
 	if (task_array == NULL) return;
