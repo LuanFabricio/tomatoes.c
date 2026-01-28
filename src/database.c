@@ -134,11 +134,25 @@ void database_fetch_tasks(task_array_t *task_array)
 	}
 }
 
-int main_()
+void database_update_task(task_t task)
 {
-	database_init();
-	printf("Database ptr: %p\n", db);
-	database_fetch_tasks(NULL);
+	char update_string[MAX_UPDATE_STRING];
+	snprintf(update_string,
+		MAX_UPDATE_STRING,
+		"update tasks set\n"
+		"\tname='%s',\n"
+		"\tlevel=%i,\n"
+		"\tcompleted=%b"
+		";",
+		task.content,
+		task.task_level,
+		task.completed);
+	printf("Query:\n%s\n", update_string);
 
-	return 0;
+	char *err_msg;
+	int res = sqlite3_exec(db, update_string, NULL, NULL, &err_msg);
+
+	if (res != SQLITE_OK) {
+		printf("%s\n", err_msg);
+	}
 }
