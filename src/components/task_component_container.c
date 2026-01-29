@@ -36,6 +36,7 @@ void task_component_container_draw(task_component_container_t container)
 	}
 
 
+	if (container.tasks.size <= 0) return;
 	DrawRectangleLines(
 		container.position.x,
 		container.position.y,
