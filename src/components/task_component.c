@@ -29,13 +29,13 @@ static Color task_component__get_level_default_color(task_level_e level)
 	return color;
 }
 
-task_component_t task_component_create(task_t task, int font_size, Vector2 position)
+task_component_t task_component_create(task_t *task, int font_size, Vector2 position)
 {
 	const Font default_font = GetFontDefault();
 	const float font_spacing = font_size / 10.f;
 	const Vector2 text_size = MeasureTextEx(
 		default_font,
-		task.content,
+		task->content,
 		font_size,
 		font_spacing);
 
@@ -67,14 +67,14 @@ task_component_t task_component_create(task_t task, int font_size, Vector2 posit
 
 void task_component_draw(task_component_t component)
 {
-	Color rect_color = task_component__get_level_default_color(component.task.task_level);
+	Color rect_color = task_component__get_level_default_color(component.task->task_level);
 	Color text_color = BLACK;
 
 	float color_brightness = 0.f;
 	if (component.selected) {
 		color_brightness += 0.25f;
 	}
-	if (component.task.completed) {
+	if (component.task->completed) {
 		color_brightness += -0.5f;
 	}
 
@@ -86,7 +86,7 @@ void task_component_draw(task_component_t component)
 	DrawRectangleRec(component.task_rect, rect_color);
 
 	DrawText(
-		component.task.content,
+		component.task->content,
 		component.text_rect.x,
 		component.text_rect.y,
 		component.font_size,

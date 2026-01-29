@@ -31,8 +31,6 @@ static int screen_height = 760;
 
 static char digits_buffer[DIGITS_BUFFER_LEN];
 
-static task_component_t task_component;
-
 
 static const int default_font_size = 32;
 
@@ -70,39 +68,15 @@ void setup(task_array_t tasks)
 	alarm = LoadSound("clock-alarm-8761.mp3");
 	timer = timer_create(60, 30, &alarm);
 
-	task_t task = {
-		.content = "test",
-		.task_level = TASK_LEVEL_EASY,
-		.completed = false,
-	};
-	task_component = task_component_create(task, 32, (Vector2){screen_width/2.f, screen_height/2.f});
 ;
 	task_container = task_component_container_create((Vector2){64, 64});
 	for (size_t i = 0; i < tasks.size; i++) {
 		task_component_container_append(
 			&task_container,
-			tasks.items[i],
+			&tasks.items[i],
 			32
 		);
 	}
-	/*
-	task_component_container_append(
-		&task_container,
-		(task_t){.content = "task easy (1)", .task_level = TASK_LEVEL_EASY},
-		32);
-	task_component_container_append(
-		&task_container,
-		(task_t){.content = "task medium (2)", .task_level = TASK_LEVEL_MEDIUM},
-		32);
-	task_component_container_append(
-		&task_container,
-		(task_t){.content = "task hard (3)", .task_level = TASK_LEVEL_HARD},
-		32);
-	task_component_container_append(
-		&task_container,
-		(task_t){.content = "Ir para academia", .task_level = TASK_LEVEL_HARD},
-		32);
-	*/
 
 	task_component_container_update_sizes(&task_container);
 	task_component_container_update_position(&task_container, (Vector2){960-task_container.size.x-30, 120});
@@ -125,8 +99,6 @@ void setup(task_array_t tasks)
 	button_component_container.buttons.items[1].on_click_callback = &button_pause_on_click_callback;
 
 	update_positions();
-
-	task_container.tasks.items[0].task.completed = true;
 }
 
 void draw_loop()
@@ -145,7 +117,6 @@ void draw_loop()
 	ClearBackground(BLACK);
 
 	task_component_container_draw(task_container);
-	task_component_draw(task_component);
 
 	DrawText(digits_buffer, digits_position.x, digits_position.y, font_size, timer_color);
 
@@ -185,7 +156,7 @@ void update_loop()
 		component->selected = task_component_contain_point(component, mouse);
 		const bool is_task_clicked = component->selected && mouse_clicked;
 		if (is_task_clicked) {
-			component->task.completed = !component->task.completed;
+			component->task->completed = !component->task->completed;
 		}
 	}
 

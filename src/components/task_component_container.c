@@ -12,7 +12,7 @@ task_component_container_t task_component_container_create(Vector2 position)
 	return container;
 }
 
-void task_component_container_append(task_component_container_t* container, task_t task, int font_size)
+void task_component_container_append(task_component_container_t* container, task_t *task, int font_size)
 {
 	const Vector2 position = {
 		.x = container->position.x,
