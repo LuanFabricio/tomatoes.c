@@ -210,13 +210,7 @@ int main(void)
 	}
 
 	for (size_t i = 0; i < task_array.size; i++) {
-		const task_t task = task_array.items[i] ;
-		printf("\t.id=%lu\n", task.id);
-		printf("\t.content=%s\n", task.content);
-		printf("\t.task_level=%i\n", task.task_level);
-		printf("\t.completed=%b\n", task.completed);
-
-		database_update_task(task);
+		database_update_task(task_array.items[i]);
 	}
 	task_array_free(&task_array);
 
