@@ -63,11 +63,8 @@ void button_component_container_update_position(button_component_container_t *co
 	Vector2 button_position = container->position;
 	for(size_t i = 0; i < container->buttons.size; ++i) {
 		button_t *item = &container->buttons.items[i];
-		item->position = button_position;
 
-		const float padding = (item->size.x - item->text.size.x) / 2.f;
-		item->text.position.x = item->position.x + padding;
-		item->text.position.y = item->position.y + item->padding.y / 2.f;
+		button_update_position(item, button_position);
 
 		button_position = Vector2Add(button_position, container->padding);
 		button_position.x += item->size.x;
