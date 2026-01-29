@@ -89,7 +89,7 @@ static int database__fetch_tasks_callback(void* task_arr_ptr, int argc, char**ar
 	task_t task = {
 		.id = atoi(argv[0]),
 		.task_level = atoi(argv[2]),
-		.completed = strcmp(argv[3], "true") == 0,
+		.completed = atoi(argv[3]) ? 1 : 0,
 	};
 
 
