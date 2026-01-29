@@ -142,11 +142,12 @@ void database_update_task(task_t task)
 		"update tasks set\n"
 		"\tname='%s',\n"
 		"\tlevel=%i,\n"
-		"\tcompleted=%b"
-		";",
+		"\tcompleted=%b\n"
+		"where id=%lu;",
 		task.content,
 		task.task_level,
-		task.completed);
+		task.completed,
+		task.id);
 	printf("Query:\n%s\n", update_string);
 
 	char *err_msg;
