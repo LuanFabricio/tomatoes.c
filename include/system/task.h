@@ -8,7 +8,8 @@
 typedef enum {
 	TASK_LEVEL_EASY,
 	TASK_LEVEL_MEDIUM,
-	TASK_LEVEL_HARD
+	TASK_LEVEL_HARD,
+	TASK_LEVEL_LEN
 } task_level_e;
 
 typedef struct {
