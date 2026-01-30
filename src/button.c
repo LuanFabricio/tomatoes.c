@@ -30,6 +30,15 @@ void button_draw(const button_t* button)
 	text_draw(&button->text, WHITE);
 }
 
+void button_update_position(button_t *button, Vector2 position)
+{
+	button->position = position;
+
+	const float padding = (button->size.x - button->text.size.x) / 2.f;
+	button->text.position.x = button->position.x + padding;
+	button->text.position.y = button->position.y + button->padding.y / 2.f;
+}
+
 bool button_contain_point(const button_t* button, Vector2 point)
 {
 	Rectangle rec = {

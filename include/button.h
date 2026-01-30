@@ -23,4 +23,5 @@ typedef struct button_t {
 
 button_t button_create(Vector2 position, Vector2 padding, text_t text, Color normal_color, Color selected_color);
 void button_draw(const button_t* button);
+void button_update_position(button_t *button, Vector2 position);
 bool button_contain_point(const button_t* button, Vector2 point);
