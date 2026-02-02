@@ -70,12 +70,14 @@ void task_form_component_draw(const task_form_t *form)
 
 	DrawRectangleRec(form->form_rect, GREEN);
 
+	const int text_padding_x = 10;
+	const int font_size = 32;
 	DrawRectangleRec(form->input_rect, WHITE);
 	DrawText(
 		form->task.content,
-		form->input_rect.x,
+		form->input_rect.x + text_padding_x,
 		form->input_rect.y,
-		32,
+		font_size,
 		BLACK
 	);
 
@@ -88,25 +90,30 @@ void task_form_component_draw(const task_form_t *form)
 		task_level_text,
 		task_level_text_size,
 		form->task.task_level);
+
 	DrawText(
 		task_level_text,
-		form->task_level_rect.x,
+		form->task_level_rect.x + text_padding_x,
 		form->task_level_rect.y,
-		32,
+		font_size,
 		BLACK);
 
 	if (form->input_state == TASK_FORM_TASK_LEVEL) {
 		for (size_t i = 0; i < TASK_LEVEL_LEN; i++) {
-			DrawRectangleRec(form->task_level_options_rect[i], WHITE);
+			Color background = WHITE;
+			if (i == form->task.task_level) {
+				background = BLUE;
+			}
+			DrawRectangleRec(form->task_level_options_rect[i], background);
 			task_form__get_task_level_text(
 				task_level_text,
 				task_level_text_size,
 				i);
 			DrawText(
 				task_level_text,
-				form->task_level_options_rect[i].x,
+				form->task_level_options_rect[i].x + text_padding_x,
 				form->task_level_options_rect[i].y,
-				32,
+				font_size,
 				BLACK);
 		}
 	}
