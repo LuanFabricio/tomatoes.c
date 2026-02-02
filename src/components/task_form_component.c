@@ -30,6 +30,8 @@ static void task_form__component_handle_mouse(task_form_t *form)
 		for (size_t i = 0; i < TASK_LEVEL_LEN; i++) {
 			if (CheckCollisionPointRec(mouse, form->task_level_options_rect[i])) {
 				form->task.task_level = i;
+				form->input_state = TASK_FORM_NONE;
+				return;
 			}
 		}
 	}
