@@ -52,7 +52,16 @@ static void task_form__component_handle_keyboard(task_form_t *form, int key_pres
 		const size_t name_len = strlen(form->task.content);
 		if (name_len >= TASK_MAX_CONTENT_LEN) return;
 
-		form->task.content[name_len] = (char)key_pressed;
+		if (key_pressed >= KEY_APOSTROPHE && key_pressed <= KEY_GRAVE) {
+			const bool is_numeric = key_pressed >= '0' && key_pressed <= '9';
+			const bool should_lower_case = IsKeyUp(KEY_LEFT_SHIFT)
+				&& IsKeyUp(KEY_RIGHT_SHIFT)
+				&& !is_numeric;
+			if (should_lower_case) {
+				key_pressed += 'a' - 'A';
+			}
+			form->task.content[name_len] = (char)key_pressed;
+		}
 	}
 }
 
