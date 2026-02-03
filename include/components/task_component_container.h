@@ -16,3 +16,4 @@ void task_component_container_append(task_component_container_t* container, task
 void task_component_container_draw(task_component_container_t container);
 void task_component_container_update_sizes(task_component_container_t *container);
 void task_component_container_update_position(task_component_container_t *container, const Vector2 position);
+void task_component_container_fix_position(task_component_container_t *container);

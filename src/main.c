@@ -53,7 +53,7 @@ static void button_pause_on_click_callback(void* button_raw)
 
 void update_positions()
 {
-	task_component_container_update_position(&task_container, (Vector2){screen_width-task_container.size.x-30, 120});
+	task_component_container_fix_position(&task_container);
 	button_component_container_update_position(
 			&button_component_container,
 			(Vector2){

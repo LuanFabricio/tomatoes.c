@@ -91,3 +91,14 @@ void task_component_container_update_position(task_component_container_t *contai
 		task_position.y += item->task_rect.height;
 	}
 }
+
+void task_component_container_fix_position(task_component_container_t *container)
+{
+	task_component_container_update_position(
+		container,
+		(Vector2){
+			GetScreenWidth() - container->size.x - 30,
+			120
+		}
+	);
+}
