@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#define TASK_MAX_CONTENT_LEN 50
+#define TASK_MAX_CONTENT_LEN 20
 
 typedef enum {
 	TASK_LEVEL_EASY,
