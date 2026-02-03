@@ -1,8 +1,13 @@
 #pragma once
 
+#include "components/task_component_container.h"
 #include "raylib.h"
 
+#include "button.h"
+#include "system/array/task_array.h"
 #include "system/task.h"
+#include "types.h"
+#include <stdbool.h>
 
 typedef enum {
 	TASK_FORM_NONE,
@@ -24,8 +29,10 @@ typedef struct {
 
 	bool show_form;
 	bool show_task_level_selector;
+
+	button_t save_btn;
 } task_form_t;
 
-void task_form_component_handle_input(task_form_t *form);
+void task_form_component_update(task_form_t *form, mouse_t mouse, task_component_container_t *task_container, task_array_t *task_array);
 void task_form_component_draw(const task_form_t *form);
 void task_form_component_setup(task_form_t *form, int screen_width, int screen_height);

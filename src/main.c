@@ -22,6 +22,8 @@ static Font font;
 static Sound alarm;
 
 static timer_pomodoro_t timer;
+
+static task_array_t task_array = {0};
 static task_component_container_t task_container;
 static button_component_container_t button_component_container;
 static button_t button_add = {0};
@@ -157,16 +159,18 @@ void update_loop()
 	screen_width = GetScreenWidth();
 	screen_height = GetScreenHeight();
 
+	const mouse_t mouse = {
+		.position = GetMousePosition(),
+		.left_clicked = IsMouseButtonPressed(MOUSE_LEFT_BUTTON),
+	};
 
-
-	const Vector2 mouse = GetMousePosition();
-	const bool mouse_clicked = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+	task_form_component_update(&form, mouse, &task_container, &task_array);
 
 	for (size_t i = 0; i < button_component_container.buttons.size; i++) {
 		button_t* button = &button_component_container.buttons.items[i];
 
-		button->selected = button_contain_point(button, mouse);
-		const bool is_button_clicked = button->selected && mouse_clicked;
+		button->selected = button_contain_point(button, mouse.position);
+		const bool is_button_clicked = button->selected && mouse.left_clicked;
 		if (is_button_clicked && button->on_click_callback) {
 			button->on_click_callback(button);
 		}
@@ -175,15 +179,14 @@ void update_loop()
 	for (size_t i = 0; i < task_container.tasks.size; i ++) {
 		task_component_t *component = &task_container.tasks.items[i];
 
-		component->selected = task_component_contain_point(component, mouse);
-		const bool is_task_clicked = component->selected && mouse_clicked;
+		component->selected = task_component_contain_point(component, mouse.position);
+		const bool is_task_clicked = component->selected && mouse.left_clicked;
 		if (is_task_clicked) {
 			component->task->completed = !component->task->completed;
 		}
 	}
 
-	button_add.selected = button_contain_point(&button_add, mouse);
-
+	button_add.selected = button_contain_point(&button_add, mouse.position);
 	if (window_changed) {
 		update_positions();
 	}
@@ -193,17 +196,16 @@ int main(void)
 {
 
 	database_init();
-	task_array_t task_array = {0};
 	database_fetch_tasks(&task_array);
 	setup(task_array);
 
 	while (!WindowShouldClose()) {
 		draw_loop();
 		update_loop();
-		task_form_component_handle_input(&form);
 	}
 
 	for (size_t i = 0; i < task_array.size; i++) {
+		// TODO: move to upinsert
 		database_update_task(task_array.items[i]);
 	}
 	task_array_free(&task_array);
