@@ -65,6 +65,42 @@ static void task_form__component_handle_keyboard(task_form_t *form, int key_pres
 	}
 }
 
+void task_form_component_setup(task_form_t *form, int screen_width, int screen_height)
+{
+	form->input_state = TASK_FORM_INPUT;
+	form->show_form = true;
+	form->form_rect = (Rectangle){
+		.x = (screen_width - 520) / 2.f,
+		.y = (screen_height - 320) / 2.f,
+		.width = 520,
+		.height = 320,
+	};
+	form->input_rect = (Rectangle) {
+		.x = (screen_width - form->form_rect.width + 20.f) / 2.f,
+		.y = (screen_height - 164) / 2.f,
+		.width = form->form_rect.width - 20.f,
+		.height = 32,
+	};
+
+	form->task_level_rect = (Rectangle) {
+		.x = (screen_width - form->form_rect.width + 20.f) / 2.f,
+		.y = form->input_rect.y + form->input_rect.height + 20.f,
+		.width = 128,
+		.height = 32,
+	};
+
+	form->completed_rect = (Rectangle) {
+		.x = (screen_width - form->form_rect.width + 20.f) / 2.f,
+		.y = form->task_level_rect.y + form->task_level_rect.height + 20.f,
+		.width = 32,
+		.height = 32,
+	};
+	for (size_t i = 0; i < TASK_LEVEL_LEN; i++) {
+		form->task_level_options_rect[i] = form->task_level_rect;
+		form->task_level_options_rect[i].y += form->task_level_options_rect[i].height * (i+1);
+	}
+}
+
 void task_form_component_handle_input(task_form_t *form)
 {
 	const int key_pressed = GetKeyPressed();

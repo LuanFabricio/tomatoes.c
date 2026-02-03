@@ -28,3 +28,4 @@ typedef struct {
 
 void task_form_component_handle_input(task_form_t *form);
 void task_form_component_draw(const task_form_t *form);
+void task_form_component_setup(task_form_t *form, int screen_width, int screen_height);
