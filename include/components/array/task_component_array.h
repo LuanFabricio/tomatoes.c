@@ -6,6 +6,7 @@
 #include "components/task_component.h"
 
 typedef struct {
+	// TODO: Move to use task array instead of array of task_component_t
 	task_component_t *items;
 	size_t size;
 	size_t capacity;
