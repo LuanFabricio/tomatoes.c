@@ -205,8 +205,7 @@ int main(void)
 	}
 
 	for (size_t i = 0; i < task_array.size; i++) {
-		// TODO: move to upinsert
-		database_update_task(task_array.items[i]);
+		database_upinsert_task(&task_array.items[i]);
 	}
 	task_array_free(&task_array);
 

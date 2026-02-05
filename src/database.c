@@ -10,8 +10,6 @@
 #include "system/array/task_array.h"
 #include "system/task.h"
 
-#define MAX_UPDATE_STRING 255
-
 typedef struct {
 	char **items;
 	size_t size;
@@ -65,7 +63,6 @@ static void database__fetch_tables()
 		exist_task_table |= strcmp(tables.items[i], "tasks") == 0;
 	}
 
-	// TODO: Check if all of the app tables exists, if not create it.
 	if (!exist_task_table) {
 		printf("Creating task table...\n");
 		const char* create_task_table_template = ""
@@ -139,8 +136,9 @@ void database_fetch_tasks(task_array_t *task_array)
 	}
 }
 
-void database_update_task(task_t task)
+void database_update_task(const task_t *task)
 {
+#define MAX_UPDATE_STRING 255
 	char update_string[MAX_UPDATE_STRING];
 	snprintf(update_string,
 		MAX_UPDATE_STRING,
@@ -149,10 +147,10 @@ void database_update_task(task_t task)
 		"\tlevel=%i,\n"
 		"\tcompleted=%b\n"
 		"where id=%lu;",
-		task.content,
-		task.task_level,
-		task.completed,
-		task.id);
+		task->content,
+		task->task_level,
+		task->completed,
+		task->id);
 	printf("Query:\n%s\n", update_string);
 
 	char *err_msg;
@@ -160,5 +158,49 @@ void database_update_task(task_t task)
 
 	if (res != SQLITE_OK) {
 		printf("%s\n", err_msg);
+	}
+#undef MAX_UPDATE_STRING
+}
+
+static int database__insert_task_callback(void* task_ptr, int, char**argv, char**)
+{
+	task_t* task = task_ptr;
+	task->id = atoi(argv[0]);
+	return 0;
+}
+
+void database_insert_task(task_t *task)
+{
+#define MAX_INSERT_STRING 255
+	char insert_string[MAX_INSERT_STRING];
+	snprintf(insert_string,
+		MAX_INSERT_STRING,
+		"insert into tasks(name, level, completed)\n"
+		"values(\n"
+		"\t'%s',\n"
+		"\t%i,\n"
+		"\t%b\n"
+		")\n"
+		"returning id;",
+		task->content,
+		task->task_level,
+		task->completed);
+	printf("Query: %s\n", insert_string);
+
+	char* err_msg;
+	int res = sqlite3_exec(db, insert_string, &database__insert_task_callback, task, &err_msg);
+	if (res != SQLITE_OK) {
+		printf("%s\n", err_msg);
+	}
+
+#undef MAX_INSERT_STRING
+}
+
+void database_upinsert_task(task_t *task)
+{
+	if (task->id <= 0) {
+		database_insert_task(task);
+	} else{
+		database_update_task(task);
 	}
 }
