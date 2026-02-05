@@ -8,6 +8,7 @@
 #include "sqlite3.h"
 
 #include "system/array/task_array.h"
+#include "system/task.h"
 
 #define MAX_UPDATE_STRING 255
 
@@ -67,15 +68,19 @@ static void database__fetch_tables()
 	// TODO: Check if all of the app tables exists, if not create it.
 	if (!exist_task_table) {
 		printf("Creating task table...\n");
-		const char* create_task_table = ""
+		const char* create_task_table_template = ""
 			"create table tasks("
 			"	id integer primary key autoincrement not null,"
-			"	name varchar(30),"
+			"	name varchar(%d),"
 			"	level int,"
 			"	completed bool)";
+		const size_t create_task_table_capacity = strlen(create_task_table_template) + 3;
+		char* create_task_table = malloc(create_task_table_capacity);
+		snprintf(create_task_table, create_task_table_capacity, create_task_table_template, TASK_MAX_CONTENT_LEN);
 		if (sqlite3_exec(db, create_task_table, NULL, NULL, &err_msg) != SQLITE_OK) {
 			printf("ERROR: %s\n", err_msg);
 		}
+		free(create_task_table);
 	}
 }
 
