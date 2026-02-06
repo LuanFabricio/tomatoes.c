@@ -69,6 +69,9 @@ static void task_form__component_handle_keyboard(task_form_t *form, int key_pres
 
 			form->task.content[name_len] = (char)key_pressed;
 		}
+		else if (key_pressed == KEY_BACKSPACE && name_len > 0) {
+			form->task.content[name_len-1] = '\0';
+		}
 	}
 }
 
