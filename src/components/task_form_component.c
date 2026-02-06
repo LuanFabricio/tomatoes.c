@@ -72,7 +72,7 @@ static void task_form__component_handle_keyboard(task_form_t *form, int key_pres
 void task_form_component_setup(task_form_t *form, int screen_width, int screen_height)
 {
 	form->input_state = TASK_FORM_INPUT;
-	form->show_form = true;
+	form->show_form = false;
 	form->form_rect = (Rectangle){
 		.x = (screen_width - 520) / 2.f,
 		.y = (screen_height - 320) / 2.f,
@@ -148,6 +148,8 @@ void task_form_component_update(task_form_t *form, const mouse_t mouse, task_com
 			32);
 		task_component_container_update_sizes(task_container);
 		task_component_container_fix_position(task_container);
+
+		memset(&form->task, 0, sizeof(form->task));
 	}
 }
 
