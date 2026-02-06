@@ -39,6 +39,11 @@ static char digits_buffer[DIGITS_BUFFER_LEN];
 
 static const int default_font_size = 32;
 
+static void button_add_on_click_callback(void *)
+{
+	form.show_form = true;
+}
+
 static void button_next_on_click_callback(void *button_raw)
 {
 	button_t *button = (button_t*) button_raw;
@@ -66,7 +71,7 @@ void update_positions()
 	button_update_position(
 		&button_add,
 		(Vector2){
-			.x = task_container.position.x,
+			.x = task_container.position.x + task_container.size.x - button_add.size.x,
 			.y = task_container.position.y - button_add.size.y - 8.f,
 		});
 }
@@ -116,6 +121,7 @@ void setup(task_array_t tasks)
 		text_create("+", 32, font),
 		GREEN,
 		ColorBrightness(GREEN, 0.5f));
+	button_add.on_click_callback = &button_add_on_click_callback;
 
 	update_positions();
 
@@ -187,6 +193,9 @@ void update_loop()
 	}
 
 	button_add.selected = button_contain_point(&button_add, mouse.position);
+	if (button_add.selected && mouse.left_clicked) {
+		button_add.on_click_callback(&button_add);
+	}
 	if (window_changed) {
 		update_positions();
 	}
