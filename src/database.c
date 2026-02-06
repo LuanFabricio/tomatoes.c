@@ -122,7 +122,15 @@ void database_fetch_tasks(task_array_t *task_array)
 	if (db == NULL) return;
 
 	char *err_msg;
-	int res = sqlite3_exec(db, "select id, name, level, completed from tasks;", database__fetch_tasks_callback, (void*)task_array, &err_msg);
+	const char* query = ""
+		"select"
+		" id,"
+		" name,"
+		" level,"
+		" completed "
+		"from tasks "
+		"where completed = false;";
+	int res = sqlite3_exec(db, query, database__fetch_tasks_callback, (void*)task_array, &err_msg);
 	if (res != SQLITE_OK) printf("%s\n", err_msg);
 
 	if (task_array == NULL) return;
