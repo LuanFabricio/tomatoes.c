@@ -19,5 +19,4 @@ text_t text_create(char* content, int font_size, Font font);
 
 void text_draw(const text_t *text, const Color color);
 
-// TODO: Create an update font size
 void text_update_font_size(text_t *text, Font font, const int font_size);
