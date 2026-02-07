@@ -74,18 +74,21 @@ void update_positions()
 			.x = task_container.position.x + task_container.size.x - button_add.size.x,
 			.y = task_container.position.y - button_add.size.y - 8.f,
 		});
+
+	task_form_component_fix_position(&form, screen_width, screen_height);
 }
 
 void setup(task_array_t tasks)
 {
 	InitWindow(screen_width, screen_height, "Pomodoro");
+	SetWindowMinSize(screen_width, screen_height);
+	SetWindowState(FLAG_WINDOW_RESIZABLE);
 	InitAudioDevice();
 
 	font = GetFontDefault();
 	alarm = LoadSound("clock-alarm-8761.mp3");
-	timer = timer_create(60, 30, &alarm);
+	timer = timer_create(25 * 60, 5 * 60, &alarm);
 
-;
 	task_container = task_component_container_create((Vector2){64, 64});
 	for (size_t i = 0; i < tasks.size; i++) {
 		task_component_container_append(
