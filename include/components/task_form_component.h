@@ -36,3 +36,4 @@ typedef struct {
 void task_form_component_update(task_form_t *form, mouse_t mouse, task_component_container_t *task_container, task_array_t *task_array);
 void task_form_component_draw(const task_form_t *form);
 void task_form_component_setup(task_form_t *form, int screen_width, int screen_height);
+void task_form_component_fix_position(task_form_t *form, int screen_width, int screen_height);

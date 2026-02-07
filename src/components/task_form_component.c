@@ -78,44 +78,52 @@ static void task_form__component_handle_keyboard(task_form_t *form, int key_pres
 	}
 }
 
-void task_form_component_setup(task_form_t *form, int screen_width, int screen_height)
+void task_form_component_fix_position(task_form_t *form, int screen_width, int screen_height)
 {
-	form->input_state = TASK_FORM_INPUT;
-	form->show_form = false;
+	const size_t form_width = 520;
+	const size_t form_heigth = 360;
 	form->form_rect = (Rectangle){
 		.x = (screen_width - 520) / 2.f,
 		.y = (screen_height - 320) / 2.f,
-		.width = 520,
-		.height = 360,
+		.width = form_width,
+		.height = form_heigth,
 	};
+
+	const size_t input_height = 32;
+	const float input_padding_x = 20.f;
+	const float input_padding_y = 52.f;
+	const size_t input_rect_width = form->form_rect.width - input_padding_x;
 	form->input_rect = (Rectangle) {
-		.x = (screen_width - form->form_rect.width + 20.f) / 2.f,
+		.x = (screen_width - form->form_rect.width + input_padding_x) / 2.f,
 		.y = (screen_height - 164) / 2.f,
-		.width = form->form_rect.width - 20.f,
-		.height = 32,
+		.width = input_rect_width,
+		.height = input_height,
 	};
 
+	const size_t task_level_width = 128;
 	form->task_level_rect = (Rectangle) {
-		.x = (screen_width - form->form_rect.width + 20.f) / 2.f,
-		.y = form->input_rect.y + form->input_rect.height + 52.f,
-		.width = 128,
-		.height = 32,
+		.x = (screen_width - form->form_rect.width + input_padding_x) / 2.f,
+		.y = form->input_rect.y + form->input_rect.height + input_padding_y,
+		.width = task_level_width,
+		.height = input_height,
 	};
 
+	const size_t completed_size = 32;
 	form->completed_rect = (Rectangle) {
-		.x = (screen_width - form->form_rect.width + 20.f) / 2.f,
-		.y = form->task_level_rect.y + form->task_level_rect.height + 52.f,
-		.width = 32,
-		.height = 32,
+		.x = (screen_width - form->form_rect.width + input_padding_x) / 2.f,
+		.y = form->task_level_rect.y + form->task_level_rect.height + input_padding_y,
+		.width = completed_size,
+		.height = completed_size,
 	};
 	for (size_t i = 0; i < TASK_LEVEL_LEN; i++) {
 		form->task_level_options_rect[i] = form->task_level_rect;
 		form->task_level_options_rect[i].y += form->task_level_options_rect[i].height * (i+1);
 	}
 
+	const float save_padding = 32;
 	form->save_btn = button_create(
 		(Vector2){0},
-		(Vector2){32, 32},
+		(Vector2){save_padding, save_padding},
 		text_create(
 			"Save",
 			32,
@@ -124,12 +132,27 @@ void task_form_component_setup(task_form_t *form, int screen_width, int screen_h
 		BLACK,
 		ColorBrightness(BLACK, 0.5)
 	);
+
 	button_update_position(
 		&form->save_btn,
 		(Vector2){
-			form->form_rect.x + form->form_rect.width - form->save_btn.size.x - 32,
-			form->form_rect.y + form->form_rect.height - form->save_btn.size.y - 32,
+			form->form_rect.x
+				+ form->form_rect.width
+				- form->save_btn.size.x
+				- save_padding,
+			form->form_rect.y
+				+ form->form_rect.height
+				- form->save_btn.size.y
+				- save_padding,
 		});
+}
+
+void task_form_component_setup(task_form_t *form, int screen_width, int screen_height)
+{
+	form->input_state = TASK_FORM_INPUT;
+	form->show_form = false;
+
+	task_form_component_fix_position(form, screen_width, screen_height);
 }
 
 void task_form_component__handle_input(task_form_t *form, const mouse_t mouse)
