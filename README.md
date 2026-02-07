@@ -2,8 +2,8 @@
 - [raylib](https://github.com/raysan5/raylib)
 - sqlite3
 
-# Build
+# Build and run
 ```sh
-mkdir -p build
-cc -g -o build/main src/**/*.c -lraylib -lm -lsqlite3
+make
+./bin/main
 ```
