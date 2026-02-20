@@ -12,3 +12,6 @@ all: $(BIN_DIR)
 
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
+
+run: all
+	$(TARGET)
