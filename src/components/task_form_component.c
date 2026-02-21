@@ -194,6 +194,10 @@ void task_form_component_update(task_form_t *form, const mouse_t mouse, task_com
 	if (form->save_btn.selected && mouse.left_clicked) {
 		form->show_form = false;
 
+		if (strlen(form->task.content) <= 0) {
+			return;
+		}
+
 		task_array_append(task_array, form->task);
 		task_component_container_append(
 			task_container,
