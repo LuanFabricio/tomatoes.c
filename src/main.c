@@ -173,12 +173,13 @@ void update_loop()
 		.left_clicked = IsMouseButtonPressed(MOUSE_LEFT_BUTTON),
 	};
 
-	task_form_component_update(&form, mouse, &task_container, &task_array);
-
+	// TODO: improve mouse position collision to update cursor type
+	bool is_mouse_over = false;
 	for (size_t i = 0; i < button_component_container.buttons.size; i++) {
 		button_t* button = &button_component_container.buttons.items[i];
 
 		button->selected = button_contain_point(button, mouse.position);
+		is_mouse_over |= button->selected;
 		const bool is_button_clicked = button->selected && mouse.left_clicked;
 		if (is_button_clicked && button->on_click_callback) {
 			button->on_click_callback(button);
@@ -189,6 +190,7 @@ void update_loop()
 		task_component_t *component = &task_container.tasks.items[i];
 
 		component->selected = task_component_contain_point(component, mouse.position);
+		is_mouse_over |= component->selected;
 		const bool is_task_clicked = component->selected && mouse.left_clicked;
 		if (is_task_clicked) {
 			component->task->completed = !component->task->completed;
@@ -196,9 +198,19 @@ void update_loop()
 	}
 
 	button_add.selected = button_contain_point(&button_add, mouse.position);
+	is_mouse_over |= button_add.selected;
 	if (button_add.selected && mouse.left_clicked) {
 		button_add.on_click_callback(&button_add);
 	}
+
+	MouseCursor cursor = MOUSE_CURSOR_DEFAULT;
+	if (!form.show_form && is_mouse_over) {
+		cursor = MOUSE_CURSOR_POINTING_HAND;
+	}
+
+	task_form_component_update(&form, mouse, &task_container, &task_array, &cursor);
+	SetMouseCursor(cursor);
+
 	if (window_changed) {
 		update_positions();
 	}

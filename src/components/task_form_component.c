@@ -165,11 +165,32 @@ void task_form_component__handle_input(task_form_t *form, const mouse_t mouse)
 	}
 }
 
-void task_form_component_update(task_form_t *form, const mouse_t mouse, task_component_container_t *task_container, task_array_t *task_array)
+void task_form_component_update(task_form_t *form, const mouse_t mouse, task_component_container_t *task_container, task_array_t *task_array, MouseCursor* cursor)
 {
 	task_form_component__handle_input(form, mouse);
 
+	if (CheckCollisionPointRec(mouse.position, form->input_rect)) {
+		*cursor = MOUSE_CURSOR_IBEAM;
+	} else if (CheckCollisionPointRec(mouse.position, form->completed_rect)) {
+		*cursor = MOUSE_CURSOR_POINTING_HAND;
+	} else if (CheckCollisionPointRec(mouse.position, form->task_level_rect)) {
+		*cursor = MOUSE_CURSOR_POINTING_HAND;
+	} else if (form->input_state == TASK_FORM_TASK_LEVEL) {
+		for (size_t i = 0; i < TASK_LEVEL_LEN; i++) {
+			const Rectangle rect = form->task_level_options_rect[i];
+			if (CheckCollisionPointRec(mouse.position, rect)) {
+				*cursor = MOUSE_CURSOR_POINTING_HAND;
+				break;
+			}
+
+		}
+	}
+
 	form->save_btn.selected = button_contain_point(&form->save_btn, mouse.position);
+	if (form->save_btn.selected) {
+		*cursor = MOUSE_CURSOR_POINTING_HAND;
+	}
+
 	if (form->save_btn.selected && mouse.left_clicked) {
 		form->show_form = false;
 
